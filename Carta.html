@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carta — Kebab &amp; Curry Restaurant</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary:       #C0392B;
+  --primary-dark:  #922B21;
+  --primary-light: #E74C3C;
+  --cream:         #FDF3E7;
+  --warm-white:    #FEFCF8;
+  --dark:          #1A1010;
+  --gold:          #D4AC0D;
+  --accent:        #922B21;
+  --card-shadow:   0 2px 20px rgba(28,10,10,0.08), 0 0 0 1px rgba(192,57,43,0.08);
+}
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--warm-white); color:var(--dark); font-family:'Inter',sans-serif; overflow-x:hidden; -webkit-font-smoothing:antialiased; }
+img { display:block; max-width:100%; }
+a { text-decoration:none; color:inherit; }
+
+/* ── NAV ── */
+nav { position:fixed; top:0; left:0; right:0; z-index:200; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; padding:0 2.5rem; height:72px; background:rgba(26,16,16,0.97); backdrop-filter:blur(20px); border-bottom:1px solid rgba(192,57,43,0.3); }
+.nav-left { display:flex; gap:2rem; list-style:none; align-items:center; }
+.nav-left a { color:rgba(253,243,231,0.55); font-size:0.72rem; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; transition:color 0.25s; }
+.nav-left a:hover { color:var(--cream); }
+.nav-logo { display:flex; flex-direction:column; align-items:center; line-height:1; }
+.nav-logo-name { font-family:'Cormorant Garamond',serif; font-size:1.35rem; font-weight:700; color:var(--cream); letter-spacing:0.12em; text-transform:uppercase; }
+.nav-logo-sub { font-size:0.55rem; color:rgba(253,243,231,0.35); letter-spacing:0.3em; text-transform:uppercase; margin-top:3px; }
+.nav-right { display:flex; justify-content:flex-end; }
+.nav-back { background:transparent; color:rgba(253,243,231,0.55); border:1px solid rgba(253,243,231,0.2); padding:0.45rem 1.3rem; font-size:0.7rem; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; transition:all 0.25s; }
+.nav-back:hover { color:var(--cream); border-color:rgba(253,243,231,0.5); }
+.nav-hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:6px; }
+.nav-hamburger span { display:block; width:24px; height:1.5px; background:var(--cream); }
+.nav-dropdown { display:none; position:fixed; top:72px; left:0; right:0; z-index:199; background:rgba(26,16,16,0.98); backdrop-filter:blur(20px); border-bottom:1px solid rgba(192,57,43,0.2); flex-direction:column; padding:0.5rem 0; }
+.nav-dropdown.open { display:flex; }
+.nav-dropdown a { color:rgba(253,243,231,0.65); font-size:0.75rem; font-weight:500; letter-spacing:0.15em; text-transform:uppercase; padding:1rem 2rem; border-bottom:1px solid rgba(192,57,43,0.1); transition:all 0.2s; }
+.nav-dropdown a:hover { color:var(--cream); background:rgba(192,57,43,0.12); }
+.nav-dropdown a:last-child { border-bottom:none; }
+
+/* ── HERO ── */
+.page-hero { position:relative; min-height:52svh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; overflow:hidden; padding:7rem 2rem 4rem; }
+.page-hero-bg { position:absolute; inset:0; background-image:url('kc_exterior_nit.jpg'); background-size:cover; background-position:center center; filter:brightness(0.28); z-index:0; }
+.page-hero-vignette { position:absolute; inset:0; background:radial-gradient(ellipse at center, transparent 25%, rgba(26,16,16,0.72) 100%); z-index:1; }
+.page-hero-content { position:relative; z-index:2; animation:heroFade 0.9s 0.2s both; }
+@keyframes heroFade { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+.page-hero-eyebrow { font-size:0.62rem; font-weight:600; letter-spacing:0.4em; text-transform:uppercase; color:var(--gold); margin-bottom:1.2rem; display:block; }
+.page-hero-title { font-family:'Cormorant Garamond',serif; font-size:clamp(3rem,8vw,5.5rem); font-weight:700; color:var(--cream); line-height:0.92; letter-spacing:0.05em; text-transform:uppercase; }
+.page-hero-title em { font-style:italic; font-weight:400; text-transform:none; color:rgba(253,243,231,0.65); }
+.page-hero-sub { color:rgba(253,243,231,0.45); font-size:0.8rem; margin-top:1.1rem; letter-spacing:0.12em; text-transform:uppercase; }
+
+/* ── MENÚ ── */
+#menu { padding:1.5rem 1.5rem 2.5rem; background:var(--warm-white); }
+.menu-card { max-width:1100px; margin:0 auto; background:#fff; box-shadow:var(--card-shadow); border-radius:4px; padding:3.5rem 3.5rem; }
+.menu-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:3rem; padding-bottom:1.5rem; border-bottom:1px solid rgba(192,57,43,0.1); flex-wrap:wrap; gap:1.5rem; }
+.menu-header-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,3.5vw,2.5rem); font-weight:700; color:var(--dark); }
+.menu-header-title em { font-style:italic; color:var(--primary); }
+.tabs { display:flex; gap:0; border:1px solid rgba(192,57,43,0.18); overflow:hidden; flex-wrap:wrap; }
+.tab { padding:0.55rem 0.9rem; background:transparent; color:rgba(26,16,16,0.45); font-family:'Inter',sans-serif; font-size:0.62rem; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; border:none; border-right:1px solid rgba(192,57,43,0.18); cursor:pointer; transition:all 0.2s; white-space:nowrap; }
+.tab:last-child { border-right:none; }
+.tab.active, .tab:hover { background:var(--primary-dark); color:var(--cream); }
+.menu-grid { display:flex; flex-direction:column; }
+.menu-cat { display:none; }
+.menu-cat.show { display:flex; flex-direction:column; }
+.cat-heading { font-size:0.62rem; font-weight:700; letter-spacing:0.35em; text-transform:uppercase; color:var(--primary); padding:2rem 0 0.8rem; border-bottom:1px solid rgba(192,57,43,0.1); margin-bottom:0; }
+.dish { display:grid; grid-template-columns:70px 1fr auto; gap:1.2rem; align-items:center; padding:1rem 0; border-bottom:1px solid rgba(192,57,43,0.07); transition:all 0.2s; cursor:pointer; }
+.dish:last-child { border-bottom:none; }
+.dish:hover { background:rgba(253,243,231,0.45); padding-left:0.7rem; padding-right:0.7rem; margin-left:-0.7rem; margin-right:-0.7rem; }
+.dish-thumb { width:70px; height:70px; border-radius:2px; object-fit:cover; flex-shrink:0; }
+.dish-thumb-placeholder { width:70px; height:70px; border-radius:2px; flex-shrink:0; background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%); display:flex; align-items:center; justify-content:center; font-size:1.3rem; }
+.dish-name { font-family:'Cormorant Garamond',serif; font-size:1.05rem; font-weight:700; color:var(--dark); margin-bottom:0.2rem; }
+.dish-desc { font-size:0.75rem; color:#aaa; line-height:1.5; }
+.dish-badge { font-size:0.55rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--primary); background:rgba(192,57,43,0.08); padding:0.15rem 0.5rem; display:inline-block; margin-top:0.3rem; }
+.dish-right { display:flex; flex-direction:column; align-items:flex-end; gap:0.5rem; min-width:58px; }
+.dish-price { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:700; color:var(--gold); white-space:nowrap; }
+.add-btn { width:30px; height:30px; border-radius:50%; background:var(--primary-dark); color:var(--cream); border:none; font-size:1.1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background 0.2s; flex-shrink:0; }
+.add-btn:hover { background:var(--primary); }
+.dish-qty { display:flex; align-items:center; gap:0.3rem; background:var(--primary-dark); border-radius:20px; padding:0.15rem 0.25rem; }
+.dish-qty-btn { width:24px; height:24px; border-radius:50%; border:none; background:rgba(255,255,255,0.15); color:var(--cream); font-size:0.85rem; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background 0.15s; line-height:1; flex-shrink:0; }
+.dish-qty-btn:hover { background:rgba(255,255,255,0.3); }
+.dish-qty-num { font-size:0.82rem; font-weight:700; color:var(--cream); min-width:14px; text-align:center; }
+
+/* ── COMANDA ── */
+#order { padding:0 1.5rem 2.5rem; background:var(--warm-white); }
+.order-card { max-width:1100px; margin:0 auto; background:#fff; box-shadow:var(--card-shadow); border-radius:4px; overflow:hidden; }
+.order-header { padding:3rem 3.5rem 2rem; border-bottom:1px solid rgba(192,57,43,0.09); }
+.order-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,3.5vw,2.5rem); font-weight:700; color:var(--dark); }
+.order-title em { font-style:italic; color:var(--primary); }
+.cart-panel { padding:2.5rem 3.5rem; border-bottom:1px solid rgba(192,57,43,0.09); }
+.cart-header-row { display:flex; justify-content:space-between; align-items:center; padding-bottom:1rem; margin-bottom:1rem; border-bottom:1px solid rgba(192,57,43,0.1); }
+.cart-label { font-size:0.6rem; font-weight:700; letter-spacing:0.25em; text-transform:uppercase; color:#bbb; }
+.cart-badge { background:var(--primary); color:var(--cream); border-radius:50%; width:22px; height:22px; font-size:0.68rem; font-weight:700; display:flex; align-items:center; justify-content:center; }
+.cart-empty { color:#ccc; font-size:0.82rem; text-align:center; padding:2rem 0; font-style:italic; }
+.cart-item-row { display:flex; justify-content:space-between; align-items:center; padding:0.6rem 0; border-bottom:1px solid rgba(192,57,43,0.07); color:var(--dark); font-size:0.8rem; gap:0.5rem; }
+.cart-item-row:last-of-type { border-bottom:none; }
+.ci-name { flex:1; line-height:1.3; }
+.ci-price { color:var(--gold); font-weight:600; white-space:nowrap; }
+.ci-qty { display:flex; align-items:center; gap:0.3rem; background:rgba(192,57,43,0.08); border-radius:20px; padding:0.1rem 0.35rem; }
+.ci-qty-btn { background:none; border:none; color:var(--dark); cursor:pointer; font-size:0.85rem; width:18px; height:18px; display:flex; align-items:center; justify-content:center; border-radius:50%; transition:background 0.15s; }
+.ci-qty-btn:hover { background:rgba(192,57,43,0.12); }
+.ci-qty-num { font-size:0.8rem; font-weight:600; min-width:14px; text-align:center; }
+.cart-total-row { display:flex; justify-content:space-between; padding-top:1rem; margin-top:0.5rem; border-top:1px solid rgba(192,57,43,0.12); font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:700; color:var(--gold); }
+.btn-confirmar { display:block; width:100%; margin-top:1.5rem; padding:1rem; background:var(--primary); color:var(--cream); border:none; font-family:'Inter',sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.22em; text-transform:uppercase; cursor:pointer; transition:all 0.25s; text-align:center; }
+.btn-confirmar:hover { background:var(--primary-light); transform:translateY(-1px); }
+.form-panel { padding:2.5rem 3.5rem; }
+.mode-toggle { display:flex; margin-bottom:2rem; border:1px solid rgba(192,57,43,0.18); overflow:hidden; }
+.tgl { flex:1; padding:0.8rem; background:transparent; border:none; color:rgba(26,16,16,0.4); font-family:'Inter',sans-serif; font-size:0.68rem; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; cursor:pointer; transition:all 0.2s; border-right:1px solid rgba(192,57,43,0.18); }
+.tgl:last-child { border-right:none; }
+.tgl.on { background:var(--primary-dark); color:var(--cream); }
+.fg { display:flex; flex-direction:column; gap:0.4rem; margin-bottom:1rem; }
+.fg label { font-size:0.6rem; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; color:#bbb; }
+.fg input, .fg textarea { background:transparent; border:none; border-bottom:1px solid rgba(192,57,43,0.18); padding:0.7rem 0; color:var(--dark); font-family:'Inter',sans-serif; font-size:0.95rem; outline:none; transition:border-color 0.2s; -webkit-appearance:none; border-radius:0; }
+.fg input:focus, .fg textarea:focus { border-bottom-color:var(--primary); }
+.fg textarea { resize:vertical; min-height:75px; }
+.submit-btn { width:100%; margin-top:1.5rem; padding:1rem; background:var(--primary); color:var(--cream); border:none; font-family:'Inter',sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.22em; text-transform:uppercase; cursor:pointer; transition:all 0.25s; }
+.submit-btn:hover { background:var(--primary-light); transform:translateY(-1px); }
+.order-info-msg { font-size:0.78rem; color:#888; line-height:1.6; background:rgba(192,57,43,0.05); border-left:2px solid var(--primary-light); padding:0.75rem 1rem; margin-bottom:1.2rem; }
+#avís-carret-buit { display:none; align-items:center; gap:0.75rem; background:#fff8f0; border:1px solid rgba(192,57,43,0.3); border-left:3px solid var(--primary); padding:0.9rem 1.1rem; margin-bottom:1.2rem; border-radius:2px; animation:shake 0.35s ease; }
+#avís-carret-buit.visible { display:flex; }
+#avís-carret-buit span { font-size:0.82rem; color:var(--primary); font-weight:500; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
+.field-error input, .field-error textarea { border-bottom-color:var(--primary) !important; animation:shake 0.35s ease; }
+.field-error label { color:var(--primary) !important; }
+.delivery-intro { font-size:0.82rem; color:#888; margin-bottom:1.5rem; line-height:1.6; }
+.delivery-apps { display:flex; flex-direction:column; gap:0.8rem; }
+.delivery-btn { display:flex; align-items:center; justify-content:center; gap:0.8rem; padding:1rem 1.5rem; font-family:'Inter',sans-serif; font-size:0.78rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; transition:all 0.25s; }
+.delivery-btn-glovo { background:#FFC244; color:#00A082; }
+.delivery-btn-glovo:hover { background:#f0b030; transform:translateY(-2px); box-shadow:0 6px 20px rgba(255,194,68,0.45); }
+.delivery-btn-uber { background:#3FC060; color:#162328; }
+.delivery-btn-uber:hover { background:#35a854; transform:translateY(-2px); box-shadow:0 6px 20px rgba(63,192,96,0.4); }
+
+/* ── FOOTER ── */
+footer { background:var(--warm-white); padding:0 1.5rem 2.5rem; text-align:center; }
+.footer-card { max-width:1100px; margin:0 auto; background:#fff; box-shadow:var(--card-shadow); border-radius:4px; padding:3rem 3.5rem 2rem; }
+.footer-name { font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:700; color:var(--dark); letter-spacing:0.1em; text-transform:uppercase; }
+.footer-name span { color:var(--primary); }
+.footer-tagline { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:0.95rem; color:#bbb; margin-top:0.3rem; }
+.footer-divider { width:32px; height:1px; background:var(--gold); margin:1.5rem auto; }
+.footer-bottom { color:#ccc; font-size:0.7rem; letter-spacing:0.08em; border-top:1px solid rgba(192,57,43,0.08); padding-top:1.2rem; }
+
+/* ── CARRET FLOTANT ── */
+#carret-flotant { position:fixed; right:20px; bottom:24px; z-index:500; }
+#carret-icona { display:flex; align-items:center; gap:0.5rem; padding:0 1.2rem; height:48px; border-radius:24px; background:var(--primary-dark); color:var(--cream); cursor:pointer; box-shadow:0 4px 20px rgba(26,16,16,0.4); transition:transform 0.2s ease, box-shadow 0.2s ease; user-select:none; white-space:nowrap; }
+#carret-icona:hover { transform:translateY(-3px); box-shadow:0 8px 28px rgba(192,57,43,0.5); }
+#carret-icona.pop { animation:cartPop 0.35s cubic-bezier(0.36,0.07,0.19,0.97); }
+@keyframes cartPop { 0%{transform:scale(1)} 30%{transform:scale(1.12)} 60%{transform:scale(0.95)} 100%{transform:scale(1)} }
+#carret-emoji { font-size:1.1rem; line-height:1; }
+#carret-total { font-family:'Cormorant Garamond',serif; font-size:1rem; font-weight:700; color:var(--cream); letter-spacing:0.02em; }
+
+/* ── ANIMACIONS ── */
+.reveal { opacity:0; transform:translateY(20px); transition:opacity 0.65s ease, transform 0.65s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-child { opacity:0; transform:translateY(16px); transition:opacity 0.5s ease, transform 0.5s ease; }
+.reveal-child.visible { opacity:1; transform:translateY(0); }
+.reveal-child:nth-child(2) { transition-delay:0.08s; }
+.reveal-child:nth-child(3) { transition-delay:0.16s; }
+@media (prefers-reduced-motion:reduce) { .reveal,.reveal-child { transition:none; opacity:1; transform:none; } }
+
+/* ── RESPONSIVE ── */
+@media (max-width:900px) {
+  nav { grid-template-columns:auto 1fr auto; padding:0 1.2rem; height:60px; }
+  .nav-left, .nav-right { display:none; }
+  .nav-logo-name { font-size:1rem; } .nav-logo-sub { display:none; }
+  .nav-hamburger { display:flex; }
+  .page-hero { min-height:44svh; padding:5.5rem 1.5rem 3rem; }
+  .page-hero-title { font-size:clamp(2.5rem,11vw,3.5rem); }
+  #menu { padding:1rem 0 1.5rem; }
+  .menu-card { border-radius:0; padding:2.5rem 1.2rem; }
+  .menu-header { flex-direction:column; align-items:flex-start; gap:1rem; }
+  .tabs { width:100%; }
+  .tab { flex:1; text-align:center; padding:0.55rem 0.2rem; font-size:0.55rem; }
+  .dish { grid-template-columns:58px 1fr auto; gap:0.8rem; padding:0.85rem 0; }
+  .dish:hover { padding-left:0; padding-right:0; margin-left:0; margin-right:0; }
+  .dish-thumb, .dish-thumb-placeholder { width:58px; height:58px; }
+  .dish-name { font-size:0.95rem; } .dish-desc { font-size:0.72rem; }
+  #order { padding:0 0 1.5rem; }
+  .order-card { border-radius:0; }
+  .order-header { padding:2.5rem 1.5rem 1.5rem; }
+  .cart-panel { padding:2rem 1.5rem; }
+  .form-panel { padding:2rem 1.5rem; }
+  .tgl { font-size:0.62rem; padding:0.75rem 0.3rem; }
+  footer { padding:0 0 1.5rem; }
+  .footer-card { border-radius:0; padding:2.5rem 1.5rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <ul class="nav-left">
+    <li><a href="#menu">Carta</a></li>
+    <li><a href="#order">Comanda</a></li>
+  </ul>
+  <a href="kc_index.html" class="nav-logo">
+    <span class="nav-logo-name">Kebab &amp; Curry</span>
+    <span class="nav-logo-sub">Restaurant · Barcelona</span>
+  </a>
+  <div class="nav-right">
+    <a href="kc_index.html" class="nav-back">← Inici</a>
+  </div>
+  <button class="nav-hamburger" id="navToggle" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="nav-dropdown" id="navDropdown">
+  <a href="#menu"  onclick="closeNav()">Carta</a>
+  <a href="#order" onclick="closeNav()">Comanda</a>
+  <a href="kc_index.html">← Inici</a>
+</div>
+
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="page-hero-vignette"></div>
+  <div class="page-hero-content">
+    <span class="page-hero-eyebrow">Kebab &amp; Curry Restaurant · Barcelona</span>
+    <h1 class="page-hero-title">La nostra <em>carta</em></h1>
+    <p class="page-hero-sub">Tria els teus plats i fes la comanda aquí baix · 100% Halal</p>
+  </div>
+</div>
+
+
+<!-- MENÚ -->
+<section id="menu">
+  <div class="menu-card reveal">
+    <div class="menu-header">
+      <h2 class="menu-header-title">Carta <em>Kebab &amp; Curry</em></h2>
+      <div class="tabs">
+        <button class="tab active" onclick="showCat('all',this)">Tot</button>
+        <button class="tab" onclick="showCat('entrants',this)">Entrants</button>
+        <button class="tab" onclick="showCat('pizzes',this)">Pizzes</button>
+        <button class="tab" onclick="showCat('chicken',this)">Chicken</button>
+        <button class="tab" onclick="showCat('lamb',this)">Lamb</button>
+        <button class="tab" onclick="showCat('rice',this)">Arròs</button>
+        <button class="tab" onclick="showCat('naan',this)">Naan</button>
+        <button class="tab" onclick="showCat('hamburgueses',this)">Burgers</button>
+        <button class="tab" onclick="showCat('postres',this)">Postres</button>
+        <button class="tab" onclick="showCat('begudes',this)">Begudes</button>
+      </div>
+    </div>
+
+    <div class="menu-grid">
+
+      <!-- ══ ENTRANTS ══ -->
+      <div class="menu-cat show" id="cat-all-entrants">
+        <div class="cat-heading">🥗 Entrants</div>
+
+        <div class="dish reveal-child" data-name="42. Lamacun" data-price="6">
+          <div class="dish-thumb-placeholder">🫓</div>
+          <div><div class="dish-name">42. Lamacun</div><div class="dish-desc">Pa turc amb tomàquet, ceba i carn assaonada</div></div>
+          <div class="dish-right"><span class="dish-price">6€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="43. Hummus" data-price="5.50">
+          <div class="dish-thumb-placeholder">🫘</div>
+          <div><div class="dish-name">43. Hummus</div><div class="dish-desc">Cigrons, all, tahini, sal i oli d'oliva</div></div>
+          <div class="dish-right"><span class="dish-price">5.50€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="44. Fregit de verdures" data-price="6">
+          <div class="dish-thumb-placeholder">🥦</div>
+          <div><div class="dish-name">44. Fregit de verdures</div><div class="dish-desc">Albergínia, carbassó, pebrot verd i vermell fregits</div></div>
+          <div class="dish-right"><span class="dish-price">6€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="45. Sarma" data-price="6.50">
+          <div class="dish-thumb-placeholder">🌿</div>
+          <div><div class="dish-name">45. Sarma</div><div class="dish-desc">Fulles de parra farcides amb arros amb amanida</div></div>
+          <div class="dish-right"><span class="dish-price">6.50€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="46. Patates fregides" data-price="4">
+          <div class="dish-thumb-placeholder">🍟</div>
+          <div><div class="dish-name">46. Patates fregides</div></div>
+          <div class="dish-right"><span class="dish-price">4€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="49. Patates Braves o Deluxe" data-price="4.50">
+          <div class="dish-thumb-placeholder">🥔</div>
+          <div><div class="dish-name">49. Patates Braves o Deluxe</div></div>
+          <div class="dish-right"><span class="dish-price">4.50€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="50. Nuggets de pollastre" data-price="5.50">
+          <div class="dish-thumb-placeholder">🍗</div>
+          <div><div class="dish-name">50. Nuggets de pollastre</div></div>
+          <div class="dish-right"><span class="dish-price">5.50€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="51. Calamars a la romana" data-price="5.50">
+          <div class="dish-thumb-placeholder">🦑</div>
+          <div><div class="dish-name">51. Calamars a la romana</div></div>
+          <div class="dish-right"><span class="dish-price">5.50€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="52. Samosa" data-price="4.50">
+          <div class="dish-thumb-placeholder">🥟</div>
+          <div><div class="dish-name">52. Samosa</div><div class="dish-desc">Crestes cruixents farcides de patates i pèsols</div></div>
+          <div class="dish-right"><span class="dish-price">4.50€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="53. Aletes de pollastre picants" data-price="5.50">
+          <div class="dish-thumb-placeholder">🌶️</div>
+          <div><div class="dish-name">53. Aletes de pollastre picants</div></div>
+          <div class="dish-right"><span class="dish-price">5.50€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="54. Chicken Pakora" data-price="6.50">
+          <div class="dish-thumb-placeholder">🍘</div>
+          <div><div class="dish-name">54. Chicken Pakora</div><div class="dish-desc">Trossets de pollastre fregits en farina de cigró</div></div>
+          <div class="dish-right"><span class="dish-price">6.50€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+
+        <!-- Amanides -->
+        <div class="cat-heading" style="margin-top:1rem;">🥗 Amanides</div>
+        <div class="dish reveal-child" data-name="2. Amanida mixta" data-price="4">
+          <div class="dish-thumb-placeholder">🥗</div>
+          <div><div class="dish-name">2. Amanida mixta</div><div class="dish-desc">Amanida, formatge de cabra i olives</div></div>
+          <div class="dish-right"><span class="dish-price">4€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="3. Amanida de Pollastre" data-price="5.50">
+          <div class="dish-thumb-placeholder">🥗</div>
+          <div><div class="dish-name">3. Amanida de Pollastre</div><div class="dish-desc">Amanida i pollastre</div></div>
+          <div class="dish-right"><span class="dish-price">5.50€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="4. Amanida de Tonyina" data-price="6">
+          <div class="dish-thumb-placeholder">🥗</div>
+          <div><div class="dish-name">4. Amanida de Tonyina</div><div class="dish-desc">Amanida i tonyina</div></div>
+          <div class="dish-right"><span class="dish-price">6€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="5. Amanida Especial" data-price="6.20">
+          <div class="dish-thumb-placeholder">🥗</div>
+          <div><div class="dish-name">5. Amanida Especial</div><div class="dish-desc">Amanida, formatge de cabra i pinya</div></div>
+          <div class="dish-right"><span class="dish-price">6.20€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+      </div><!-- /entrants -->
+
+
+      <!-- ══ PIZZES ══ -->
+      <div class="menu-cat show" id="cat-all-pizzes">
+        <div class="cat-heading">🍕 Pizzes</div>
+
+        <div class="dish reveal-child" data-name="1. Margarita" data-price="8">
+          <div class="dish-thumb-placeholder">🍕</div>
+          <div><div class="dish-name">1. Margarita</div><div class="dish-desc">Salsa de tomàquet i mozzarella</div></div>
+          <div class="dish-right"><span class="dish-price">8€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="2. Margarita Garlic" data-price="9">
+          <div class="dish-thumb-placeholder">🍕</div>
+          <div><div class="dish-name">2. Margarita Garlic</div><div class="dish-desc">Mozzarella i salsa d'all</div></div>
+          <div class="dish-right"><span class="dish-price">9€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="3. Reina" data-price="9">
+          <div class="dish-thumb-placeholder">🍕</div>
+          <div><div class="dish-name">3. Reina</div><div class="dish-desc">Salsa de tomàquet, mozzarella, ou i xampinyons</div></div>
+          <div class="dish-right"><span class="dish-price">9€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="4. Vegetal" data-price="9">
+          <div class="dish-thumb-placeholder">🍕</div>
+          <div><div class="dish-name">4. Vegetal</div><div class="dish-desc">Tomàquet, mozzarella, xampinyons, ceba, tomàquet, blat de moro i olives</div></div>
+          <div class="dish-right"><span class="dish-price">9€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="5. Formatges" data-price="9">
+          <div class="dish-thumb-placeholder">🍕</div>
+          <div><div class="dish-name">5. Formatges</div><div class="dish-desc">Tomàquet, mozzarella, roquefort, emmental, provolone, parmesà</div></div>
+          <div class="dish-right"><span class="dish-price">9€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="6. Napolitana" data-price="9">
+          <div class="dish-thumb-placeholder">🍕</div>
+          <div><div class="dish-name">6. Napolitana</div><div class="dish-desc">Tomàquet, mozzarella, anxoves i olives</div></div>
+          <div class="dish-right"><span class="dish-price">9€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="7. Mar i Muntanya" data-price="10.50">
+          <div class="dish-thumb-placeholder">🍕</div>
+          <div><div class="dish-name">7. Mar i Muntanya</div><div class="dish-desc">Tomàquet, mozzarella, gambes, xampinyons, carn de gall dindi i olives</div></div>
+          <div class="dish-right"><span class="dish-price">10.50€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="8. Normal Kebab" data-price="9">
+          <div class="dish-thumb-placeholder">🍕</div>
+          <div><div class="dish-name">8. Normal Kebab</div><div class="dish-desc">Tomàquet, mozzarella i carn de pollastre de kebab</div></div>
+          <div class="dish-right"><span class="dish-price">9€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="9. Especial" data-price="10.50">
+          <div class="dish-thumb-placeholder">🍕</div>
+          <div><div class="dish-name">9. Especial</div><div class="dish-desc">Tomàquet, mozzarella, pollastre tikka i kebab, ceba, blat de moro, pebrot verd i vermell</div></div>
+          <div class="dish-right"><span class="dish-price">10.50€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="10. Tropical" data-price="10.50">
+          <div class="dish-thumb-placeholder">🍕</div>
+          <div><div class="dish-name">10. Tropical</div><div class="dish-desc">Tomàquet, mozzarella, pebrot verd, carn picada, ceba i pinya</div></div>
+          <div class="dish-right"><span class="dish-price">10.50€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="11. Tonyina" data-price="10.50">
+          <div class="dish-thumb-placeholder">🍕</div>
+          <div><div class="dish-name">11. Tonyina</div><div class="dish-desc">Tomàquet, mozzarella, ceba, olives i tonyina</div></div>
+          <div class="dish-right"><span class="dish-price">10.50€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+      </div><!-- /pizzes -->
+
+
+      <!-- ══ CHICKEN DISHES ══ -->
+      <div class="menu-cat show" id="cat-all-chicken">
+        <div class="cat-heading">🍗 Chicken Dishes — servits amb arròs basmati</div>
+
+        <div class="dish reveal-child" data-name="Chicken Curry" data-price="14">
+          <img src="kc_chicken_dishes.jpg" alt="Chicken Curry" class="dish-thumb" style="object-position:center top;">
+          <div><div class="dish-name">Chicken Curry Amb Arròs</div><div class="dish-desc">Pollastre trossejat, guisat amb salsa curry i espècies</div></div>
+          <div class="dish-right"><span class="dish-price">14€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Chicken Methi" data-price="14">
+          <div class="dish-thumb-placeholder">🍛</div>
+          <div><div class="dish-name">Chicken Methi Amb Arròs</div><div class="dish-desc">Trossos de pollastre preparats en herbes especials i lleugerament picant</div></div>
+          <div class="dish-right"><span class="dish-price">14€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Chicken Madras" data-price="14">
+          <div class="dish-thumb-placeholder">🍛</div>
+          <div><div class="dish-name">Chicken Madras Amb Arròs</div><div class="dish-desc">Trossos de pollastre preparats amb espècies i salsa picant</div></div>
+          <div class="dish-right"><span class="dish-price">14€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Chicken Korma" data-price="14">
+          <div class="dish-thumb-placeholder">🍛</div>
+          <div><div class="dish-name">Chicken Korma Amb Arròs</div><div class="dish-desc">Pollastre cuinat amb llet, nata, fruits secs i suaus espècies</div></div>
+          <div class="dish-right"><span class="dish-price">14€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Chicken Vindaloo" data-price="14">
+          <div class="dish-thumb-placeholder">🌶️</div>
+          <div><div class="dish-name">Chicken Vindaloo Amb Arròs</div><div class="dish-desc">Trossets de pollastre preparats amb espècies i molt picant</div></div>
+          <div class="dish-right"><span class="dish-price">14€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Chicken Tikka Masala" data-price="14">
+          <div class="dish-thumb-placeholder">🍛</div>
+          <div><div class="dish-name">Chicken Tikka Masala Amb Arròs</div><div class="dish-desc">Trossos de pollastre preparats en ceba, espècies i llet</div><span class="dish-badge">⭐ Popular</span></div>
+          <div class="dish-right"><span class="dish-price">14€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Butter Chicken" data-price="14">
+          <img src="kc_curry.jpg" alt="Butter Chicken" class="dish-thumb" style="object-position:center top;">
+          <div><div class="dish-name">Butter Chicken Amb Arròs</div><div class="dish-desc">Trossos de pollastre amb salsa de nata, tomàquet i mantega</div><span class="dish-badge">⭐ Popular</span></div>
+          <div class="dish-right"><span class="dish-price">14€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Chana Masala" data-price="11">
+          <div class="dish-thumb-placeholder">🫘</div>
+          <div><div class="dish-name">Chana Masala Amb Arròs</div><div class="dish-desc">Cigrons preparats amb ceba, tomàquet picat, all, gingebre i espècies</div></div>
+          <div class="dish-right"><span class="dish-price">11€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Palak Paneer" data-price="11">
+          <div class="dish-thumb-placeholder">🥬</div>
+          <div><div class="dish-name">Palak Paneer Amb Arròs</div><div class="dish-desc">Espinacs especialitats acompanyats de tendre formatge fresc</div></div>
+          <div class="dish-right"><span class="dish-price">11€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+      </div><!-- /chicken -->
+
+
+      <!-- ══ LAMB DISHES ══ -->
+      <div class="menu-cat show" id="cat-all-lamb">
+        <div class="cat-heading">🐑 Lamb Dishes — servits amb arròs basmati</div>
+
+        <div class="dish reveal-child" data-name="Lamb Curry" data-price="17">
+          <div class="dish-thumb-placeholder">🍛</div>
+          <div><div class="dish-name">Lamb Curry Amb Arròs</div><div class="dish-desc">Xai trossejat preparat amb salsa curry i espècies</div></div>
+          <div class="dish-right"><span class="dish-price">17€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Lamb Madras" data-price="17">
+          <div class="dish-thumb-placeholder">🌶️</div>
+          <div><div class="dish-name">Lamb Madras Amb Arròs</div><div class="dish-desc">Xai preparat amb espècies i salsa picant</div></div>
+          <div class="dish-right"><span class="dish-price">17€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Lamb Korma" data-price="17">
+          <div class="dish-thumb-placeholder">🍛</div>
+          <div><div class="dish-name">Lamb Korma Amb Arròs</div><div class="dish-desc">Xai cuinat amb llet, nata, fruits secs i suaus espècies</div></div>
+          <div class="dish-right"><span class="dish-price">17€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Lamb Vindaloo" data-price="17">
+          <div class="dish-thumb-placeholder">🌶️</div>
+          <div><div class="dish-name">Lamb Vindaloo Amb Arròs</div><div class="dish-desc">Xai preparat amb espècies i molt picant</div></div>
+          <div class="dish-right"><span class="dish-price">17€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Lamb Karahi" data-price="17">
+          <div class="dish-thumb-placeholder">🍛</div>
+          <div><div class="dish-name">Lamb Karahi Amb Arròs</div><div class="dish-desc">Xai preparat amb pebrot verd i vermell, ceba i espècies</div></div>
+          <div class="dish-right"><span class="dish-price">17€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+      </div><!-- /lamb -->
+
+
+      <!-- ══ RICE DISHES ══ -->
+      <div class="menu-cat show" id="cat-all-rice">
+        <div class="cat-heading">🍚 Rice Dishes</div>
+
+        <div class="dish reveal-child" data-name="Chicken Biryani" data-price="14">
+          <div class="dish-thumb-placeholder">🍚</div>
+          <div><div class="dish-name">Chicken Biryani</div><div class="dish-desc">Arròs basmati aromàtic preparat amb pollastre, saliàndria i espècies</div></div>
+          <div class="dish-right"><span class="dish-price">14€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Lamb Biryani" data-price="17">
+          <div class="dish-thumb-placeholder">🍚</div>
+          <div><div class="dish-name">Lamb Biryani</div><div class="dish-desc">Arròs basmati aromàtic preparat amb xai, saliàndria i espècies</div></div>
+          <div class="dish-right"><span class="dish-price">17€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Prawn Biryani" data-price="15">
+          <div class="dish-thumb-placeholder">🦐</div>
+          <div><div class="dish-name">Prawn Biryani</div><div class="dish-desc">Arròs basmati aromàtic preparat amb gambes, saliàndria i espècies</div></div>
+          <div class="dish-right"><span class="dish-price">15€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Vegetable Biryani" data-price="11">
+          <div class="dish-thumb-placeholder">🥦</div>
+          <div><div class="dish-name">Vegetable Biryani</div><div class="dish-desc">Arròs basmati aromàtic preparat amb verdures, saliàndria i espècies</div></div>
+          <div class="dish-right"><span class="dish-price">11€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Pulao (Arròs Blanc)" data-price="8">
+          <div class="dish-thumb-placeholder">🍚</div>
+          <div><div class="dish-name">Pulao (Arròs Blanc)</div><div class="dish-desc">Arròs basmati amb cardamom i altres espècies aromàtiques</div></div>
+          <div class="dish-right"><span class="dish-price">8€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+      </div><!-- /rice -->
+
+
+      <!-- ══ NAAN ══ -->
+      <div class="menu-cat show" id="cat-all-naan">
+        <div class="cat-heading">🫓 Naan</div>
+
+        <div class="dish reveal-child" data-name="Naan" data-price="2">
+          <div class="dish-thumb-placeholder">🫓</div>
+          <div><div class="dish-name">Naan</div></div>
+          <div class="dish-right"><span class="dish-price">2€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Butter Naan" data-price="4.50">
+          <div class="dish-thumb-placeholder">🧈</div>
+          <div><div class="dish-name">Butter Naan</div><div class="dish-desc">Pa de mantega</div></div>
+          <div class="dish-right"><span class="dish-price">4.50€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Garlic Naan" data-price="3">
+          <div class="dish-thumb-placeholder">🧄</div>
+          <div><div class="dish-name">Garlic Naan</div><div class="dish-desc">Pa d'all</div></div>
+          <div class="dish-right"><span class="dish-price">3€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Cheese Naan" data-price="4">
+          <div class="dish-thumb-placeholder">🧀</div>
+          <div><div class="dish-name">Cheese Naan</div><div class="dish-desc">Pa de formatge</div></div>
+          <div class="dish-right"><span class="dish-price">4€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Onion Naan" data-price="3">
+          <div class="dish-thumb-placeholder">🧅</div>
+          <div><div class="dish-name">Onion Naan</div><div class="dish-desc">Pa de ceba</div></div>
+          <div class="dish-right"><span class="dish-price">3€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Kashmiri Naan" data-price="5">
+          <div class="dish-thumb-placeholder">🥥</div>
+          <div><div class="dish-name">Kashmiri Naan</div><div class="dish-desc">Pa amb fruits secs i llet de coco</div></div>
+          <div class="dish-right"><span class="dish-price">5€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Keema Naan" data-price="4">
+          <div class="dish-thumb-placeholder">🥩</div>
+          <div><div class="dish-name">Keema Naan</div><div class="dish-desc">Pa farcit de carn picada</div></div>
+          <div class="dish-right"><span class="dish-price">4€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+      </div><!-- /naan -->
+
+
+      <!-- ══ HAMBURGUESES ══ -->
+      <div class="menu-cat show" id="cat-all-hamburgueses">
+        <div class="cat-heading">🍔 Hamburgueses — amb enciam i tomàquet</div>
+
+        <div class="dish reveal-child" data-name="56. Chicken Burger" data-price="6">
+          <div class="dish-thumb-placeholder">🍔</div>
+          <div><div class="dish-name">56. Chicken Burger</div><div class="dish-desc">Hamburguesa de pollastre amb amanida, maionesa i formatge · Sol: 6€ / Menú: 9€</div></div>
+          <div class="dish-right"><span class="dish-price">6 / 9€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="57. Beef Burger" data-price="9">
+          <div class="dish-thumb-placeholder">🍔</div>
+          <div><div class="dish-name">57. Beef Burger</div><div class="dish-desc">Hamburguesa de vedella amb amanida, maionesa i formatge · Sol: 9€ / Menú: 12€</div></div>
+          <div class="dish-right"><span class="dish-price">9 / 12€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+      </div><!-- /hamburgueses -->
+
+
+      <!-- ══ POSTRES ══ -->
+      <div class="menu-cat show" id="cat-all-postres">
+        <div class="cat-heading">🍮 Postres</div>
+
+        <div class="dish reveal-child" data-name="Gulab Jamun" data-price="3">
+          <div class="dish-thumb-placeholder">🍡</div>
+          <div><div class="dish-name">Gulab Jamun</div><div class="dish-desc">Boletes de farina preparades en xarop especial dolç</div></div>
+          <div class="dish-right"><span class="dish-price">3€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Baklava" data-price="4">
+          <div class="dish-thumb-placeholder">🍯</div>
+          <div><div class="dish-name">Baklava</div><div class="dish-desc">Postre cruixent de massa fina amb nous i pistatxes, banyat en mel</div></div>
+          <div class="dish-right"><span class="dish-price">4€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Mango Kulfi" data-price="3.60">
+          <div class="dish-thumb-placeholder">🥭</div>
+          <div><div class="dish-name">Mango Kulfi</div><div class="dish-desc">Gelat de mango</div></div>
+          <div class="dish-right"><span class="dish-price">3.60€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Pista Kulfi" data-price="3.60">
+          <div class="dish-thumb-placeholder">🍨</div>
+          <div><div class="dish-name">Pista Kulfi</div><div class="dish-desc">Gelat de pistatxo i fruits secs</div></div>
+          <div class="dish-right"><span class="dish-price">3.60€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Lassi" data-price="3">
+          <div class="dish-thumb-placeholder">🥛</div>
+          <div><div class="dish-name">Lassi</div><div class="dish-desc">Batut de llet i iogurt</div></div>
+          <div class="dish-right"><span class="dish-price">3€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Jeera Lassi" data-price="4">
+          <div class="dish-thumb-placeholder">🥛</div>
+          <div><div class="dish-name">Jeera Lassi</div><div class="dish-desc">Batut de llet, iogurt i comí</div></div>
+          <div class="dish-right"><span class="dish-price">4€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Mango Lassi" data-price="5">
+          <div class="dish-thumb-placeholder">🥭</div>
+          <div><div class="dish-name">Mango Lassi</div><div class="dish-desc">Batut de llet, iogurt i mango</div></div>
+          <div class="dish-right"><span class="dish-price">5€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+      </div><!-- /postres -->
+
+
+      <!-- ══ BEGUDES ══ -->
+      <div class="menu-cat show" id="cat-all-begudes">
+        <div class="cat-heading">🥤 Begudes</div>
+
+        <div class="dish reveal-child" data-name="Coca Cola / Zero" data-price="2.50">
+          <div class="dish-thumb-placeholder">🥤</div>
+          <div><div class="dish-name">Coca Cola / Zero</div></div>
+          <div class="dish-right"><span class="dish-price">2.50€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Fanta Taronja / Llimona" data-price="2.50">
+          <div class="dish-thumb-placeholder">🍊</div>
+          <div><div class="dish-name">Fanta Taronja / Llimona</div></div>
+          <div class="dish-right"><span class="dish-price">2.50€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Schweppes Tònica / Llimona" data-price="2.50">
+          <div class="dish-thumb-placeholder">🫧</div>
+          <div><div class="dish-name">Schweppes Tònica / Llimona</div></div>
+          <div class="dish-right"><span class="dish-price">2.50€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Aquarius Llimona / Taronja" data-price="2.50">
+          <div class="dish-thumb-placeholder">🫙</div>
+          <div><div class="dish-name">Aquarius Llimona / Taronja</div></div>
+          <div class="dish-right"><span class="dish-price">2.50€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Nestea Llimona / Maracuyà" data-price="2.50">
+          <div class="dish-thumb-placeholder">🍹</div>
+          <div><div class="dish-name">Nestea Llimona / Maracuyà</div></div>
+          <div class="dish-right"><span class="dish-price">2.50€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Redbull" data-price="3">
+          <div class="dish-thumb-placeholder">⚡</div>
+          <div><div class="dish-name">Redbull</div></div>
+          <div class="dish-right"><span class="dish-price">3€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Ayran" data-price="2.50">
+          <div class="dish-thumb-placeholder">🥛</div>
+          <div><div class="dish-name">Ayran</div><div class="dish-desc">Beguda de iogurt turc</div></div>
+          <div class="dish-right"><span class="dish-price">2.50€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Cervesa 0.0" data-price="2.50">
+          <div class="dish-thumb-placeholder">🍺</div>
+          <div><div class="dish-name">Cervesa 0.0</div></div>
+          <div class="dish-right"><span class="dish-price">2.50€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Suc" data-price="2.50">
+          <div class="dish-thumb-placeholder">🧃</div>
+          <div><div class="dish-name">Suc / Zumo</div></div>
+          <div class="dish-right"><span class="dish-price">2.50€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Lipton Ice Tea" data-price="2.50">
+          <div class="dish-thumb-placeholder">🍵</div>
+          <div><div class="dish-name">Lipton Ice Tea</div></div>
+          <div class="dish-right"><span class="dish-price">2.50€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="7up" data-price="2.50">
+          <div class="dish-thumb-placeholder">🫧</div>
+          <div><div class="dish-name">7up</div></div>
+          <div class="dish-right"><span class="dish-price">2.50€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Trina Taronja" data-price="2.50">
+          <div class="dish-thumb-placeholder">🍊</div>
+          <div><div class="dish-name">Trina Taronja</div></div>
+          <div class="dish-right"><span class="dish-price">2.50€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Agua amb gas 0.5L" data-price="2.50">
+          <div class="dish-thumb-placeholder">💧</div>
+          <div><div class="dish-name">Agua amb gas 0.5L</div></div>
+          <div class="dish-right"><span class="dish-price">2.50€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+        <div class="dish reveal-child" data-name="Agua 0.5L" data-price="2">
+          <div class="dish-thumb-placeholder">💧</div>
+          <div><div class="dish-name">Agua 0.5L</div></div>
+          <div class="dish-right"><span class="dish-price">2€</span><div class="dish-qty-wrap"></div></div>
+        </div>
+      </div><!-- /begudes -->
+
+    </div>
+  </div>
+</section>
+
+
+<!-- COMANDA -->
+<section id="order">
+  <div class="order-card reveal">
+    <div class="order-header">
+      <h2 class="order-title">Recull o <em>a domicili</em></h2>
+    </div>
+    <div class="order-body">
+
+      <div class="cart-panel">
+        <div class="cart-header-row">
+          <span class="cart-label">La teva comanda</span>
+          <div class="cart-badge" id="cart-count">0</div>
+        </div>
+        <div id="cart-items"><p class="cart-empty">Afegeix plats de la carta</p></div>
+        <div class="cart-total-row" id="cart-total-row" style="display:none">
+          <span>Total</span>
+          <span id="cart-total-val">0.00€</span>
+        </div>
+        <button class="btn-confirmar" onclick="document.getElementById('order-form').scrollIntoView({behavior:'smooth',block:'start'})">
+          Confirmar comanda ↓
+        </button>
+      </div>
+
+      <div class="form-panel" id="order-form">
+        <div class="mode-toggle">
+          <button class="tgl on" id="tgl-recollida" onclick="setMode('recollida')">🏃 Recollida al local</button>
+          <button class="tgl"    id="tgl-domicili"  onclick="setMode('domicili')">🛵 A domicili</button>
+        </div>
+
+        <div id="recollida-section">
+          <div class="fg">
+            <label>Nom *</label>
+            <input id="f-nom" type="text" placeholder="El teu nom" autocomplete="given-name">
+          </div>
+          <div class="fg">
+            <label>Notes (al·lèrgies, peticions...)</label>
+            <textarea id="f-notes" placeholder="Sense picant, sense ceba..."></textarea>
+          </div>
+          <div class="order-info-msg" id="info-recollida">
+            ℹ️ Un cop enviada la comanda, et farem arribar un missatge confirmant quan estarà llesta per recollir.
+          </div>
+          <div id="avís-carret-buit">
+            <span>🛒</span>
+            <span>Afegeix algun plat de la carta abans d'enviar la comanda.</span>
+          </div>
+          <button class="submit-btn" style="display:flex;align-items:center;justify-content:center;gap:0.6rem;" onclick="enviarComanda()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Enviar per WhatsApp
+          </button>
+        </div>
+
+        <div id="domicili-section" style="display:none">
+          <p class="delivery-intro">Comanda a domicili a través de les nostres plataformes de lliurament:</p>
+          <div class="delivery-apps">
+            <a href="https://glovo.go.link/open?adjust_deeplink=glovoapp%3A%2F%2Fopen%3Flink_type%3Dstore%26store_id%3DXXXXXXXXX&adjust_t=s321jkn" target="_blank" class="delivery-btn delivery-btn-glovo">
+              <img src="glovo.jpg" alt="Glovo" style="width:32px;height:32px;border-radius:6px;object-fit:cover;">
+              Demanar per Glovo
+            </a>
+            <a href="https://www.ubereats.com" target="_blank" class="delivery-btn delivery-btn-uber">
+              <img src="uber_eats.png" alt="Uber Eats" style="width:32px;height:32px;border-radius:6px;object-fit:cover;">
+              Demanar per Uber Eats
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-card reveal">
+    <div class="footer-name">Kebab <span>&amp;</span> Curry</div>
+    <div class="footer-tagline">La cuina turca i pakistanesa al cor de Barcelona</div>
+    <div class="footer-divider"></div>
+    <div class="footer-bottom">© 2025 Kebab &amp; Curry Restaurant · Barcelona · 🥙 100% Halal</div>
+  </div>
+</footer>
+
+
+<div id="carret-flotant">
+  <div id="carret-icona" onclick="window.location.href='#order'" title="Veure comanda">
+    <span id="carret-emoji">🛒</span>
+    <span id="carret-total">0.00€</span>
+  </div>
+</div>
+
+
+<script>
+const navToggle   = document.getElementById('navToggle');
+const navDropdown = document.getElementById('navDropdown');
+navToggle.addEventListener('click', () => navDropdown.classList.toggle('open'));
+function closeNav() { navDropdown.classList.remove('open'); }
+document.addEventListener('click', e => {
+  if (!navToggle.contains(e.target) && !navDropdown.contains(e.target))
+    navDropdown.classList.remove('open');
+});
+
+let cart = [];
+let orderMode = 'recollida';
+
+function renderDishes() {
+  document.querySelectorAll('.dish[data-name]').forEach(dish => {
+    const name  = dish.dataset.name;
+    const price = parseFloat(dish.dataset.price);
+    const wrap  = dish.querySelector('.dish-qty-wrap');
+    if (!wrap) return;
+    const item = cart.find(i => i.name === name);
+    if (!item) {
+      wrap.innerHTML = '<button class="add-btn">+</button>';
+      wrap.querySelector('.add-btn').addEventListener('click', e => {
+        e.stopPropagation();
+        cart.push({ name, price, qty:1 });
+        afegirAlCarret(name, price);
+        renderCart(); renderDishes();
+      });
+    } else {
+      wrap.innerHTML = `<div class="dish-qty">
+        <button class="dish-qty-btn minus">−</button>
+        <span class="dish-qty-num">${item.qty}</span>
+        <button class="dish-qty-btn plus">+</button>
+      </div>`;
+      wrap.querySelector('.minus').addEventListener('click', e => {
+        e.stopPropagation();
+        const idx = cart.findIndex(i => i.name === name);
+        if (--cart[idx].qty <= 0) cart.splice(idx,1);
+        actualitzarCarret();
+        renderCart(); renderDishes();
+      });
+      wrap.querySelector('.plus').addEventListener('click', e => {
+        e.stopPropagation();
+        cart.find(i => i.name === name).qty++;
+        afegirAlCarret(name, price);
+        renderCart(); renderDishes();
+      });
+    }
+  });
+}
+
+function changeQty(idx, delta) {
+  cart[idx].qty += delta;
+  if (cart[idx].qty <= 0) cart.splice(idx,1);
+  actualitzarCarret();
+  renderCart(); renderDishes();
+}
+
+function renderCart() {
+  const el       = document.getElementById('cart-items');
+  const countEl  = document.getElementById('cart-count');
+  const totalRow = document.getElementById('cart-total-row');
+  const totalVal = document.getElementById('cart-total-val');
+  countEl.textContent = cart.reduce((s,i) => s + i.qty, 0);
+  if (!cart.length) {
+    el.innerHTML = '<p class="cart-empty">Afegeix plats de la carta</p>';
+    totalRow.style.display = 'none'; return;
+  }
+  let html = '', total = 0;
+  cart.forEach((item, idx) => {
+    const sub = (item.price * item.qty).toFixed(2);
+    total += item.price * item.qty;
+    html += `<div class="cart-item-row">
+      <span class="ci-name">${item.name}</span>
+      <div class="ci-qty">
+        <button class="ci-qty-btn" onclick="changeQty(${idx},-1)">−</button>
+        <span class="ci-qty-num">${item.qty}</span>
+        <button class="ci-qty-btn" onclick="changeQty(${idx},1)">+</button>
+      </div>
+      <span class="ci-price">${sub}€</span>
+    </div>`;
+  });
+  el.innerHTML = html;
+  totalRow.style.display = 'flex';
+  totalVal.textContent = total.toFixed(2) + '€';
+}
+
+function shakeField(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const fg = el.closest('.fg');
+  if (!fg) return;
+  fg.classList.remove('field-error');
+  void fg.offsetWidth;
+  fg.classList.add('field-error');
+  setTimeout(() => fg.classList.remove('field-error'), 600);
+  el.focus();
+}
+
+function submitOrder() {}
+
+function showCat(cat, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  if (cat === 'all') {
+    document.querySelectorAll('.menu-cat').forEach(c => c.classList.add('show'));
+  } else {
+    document.querySelectorAll('.menu-cat').forEach(c => c.classList.remove('show'));
+    document.querySelectorAll(`[id^="cat-all-${cat}"]`).forEach(c => c.classList.add('show'));
+  }
+}
+
+function setMode(mode) {
+  orderMode = mode;
+  document.getElementById('tgl-recollida').classList.toggle('on', mode === 'recollida');
+  document.getElementById('tgl-domicili').classList.toggle('on',  mode === 'domicili');
+  document.getElementById('recollida-section').style.display = mode === 'recollida' ? 'block' : 'none';
+  document.getElementById('domicili-section').style.display  = mode === 'domicili'  ? 'block' : 'none';
+}
+
+(function(){
+  const obs = new IntersectionObserver(entries => entries.forEach(e => {
+    if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }
+  }), { threshold:0.1 });
+  document.querySelectorAll('.reveal,.reveal-child').forEach(el => obs.observe(el));
+})();
+
+renderDishes();
+
+/* ── CARRET FLOTANT ── */
+let carret = [];
+function afegirAlCarret(nom, preu) {
+  carret.push({nom, preu});
+  actualitzarCarret();
+  animacioAfegir();
+}
+function actualitzarCarret() {
+  const totalEuros = cart.reduce((s,i) => s + i.price * i.qty, 0);
+  document.getElementById('carret-total').textContent = totalEuros.toFixed(2) + '€';
+}
+function enviarComanda() {
+  if (!cart.length) {
+    const avis = document.getElementById('avís-carret-buit');
+    avis.classList.remove('visible'); void avis.offsetWidth; avis.classList.add('visible');
+    setTimeout(() => avis.classList.remove('visible'), 4000); return;
+  }
+  if (!document.getElementById('f-nom').value.trim()) { shakeField('f-nom'); return; }
+  let missatge = "🏃 Nova comanda per RECOLLIR%0A📍 Kebab & Curry Restaurant — Barcelona%0A%0A";
+  missatge += "🧾 Plats:%0A";
+  cart.forEach(item => {
+    missatge += "  • " + item.qty + "x " + item.name + " — " + (item.price * item.qty).toFixed(2) + "€%0A";
+  });
+  const nom   = document.getElementById("f-nom").value.trim();
+  const notes = document.getElementById("f-notes").value;
+  const total = cart.reduce((s,i) => s + i.price * i.qty, 0);
+  missatge += "%0A💰 Total: " + total.toFixed(2) + "€";
+  missatge += "%0A👤 Nom: " + nom;
+  if (notes) missatge += "%0A📝 Notes: " + notes;
+  window.open("https://wa.me/34930358527?text=" + missatge, "_blank");
+}
+function animacioAfegir() {
+  const icona = document.getElementById("carret-icona");
+  if (!icona) return;
+  icona.classList.remove("pop"); void icona.offsetWidth; icona.classList.add("pop");
+  icona.addEventListener("animationend", () => icona.classList.remove("pop"), { once:true });
+}
+</script>
+</body>
+</html>
