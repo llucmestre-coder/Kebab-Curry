@@ -119,9 +119,9 @@ nav { position:fixed; top:0; left:0; right:0; z-index:200; display:grid; grid-te
 .submit-btn { width:100%; margin-top:1.5rem; padding:1rem; background:var(--primary); color:var(--cream); border:none; font-family:'Inter',sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.22em; text-transform:uppercase; cursor:pointer; transition:all 0.25s; }
 .submit-btn:hover { background:var(--primary-light); transform:translateY(-1px); }
 .order-info-msg { font-size:0.78rem; color:#888; line-height:1.6; background:rgba(192,57,43,0.05); border-left:2px solid var(--primary-light); padding:0.75rem 1rem; margin-bottom:1.2rem; }
-#avís-carret-buit { display:none; align-items:center; gap:0.75rem; background:#fff8f0; border:1px solid rgba(192,57,43,0.3); border-left:3px solid var(--primary); padding:0.9rem 1.1rem; margin-bottom:1.2rem; border-radius:2px; animation:shake 0.35s ease; }
-#avís-carret-buit.visible { display:flex; }
-#avís-carret-buit span { font-size:0.82rem; color:var(--primary); font-weight:500; }
+#avis-carret-buit { display:none; align-items:center; gap:0.75rem; background:#fff8f0; border:1px solid rgba(192,57,43,0.3); border-left:3px solid var(--primary); padding:0.9rem 1.1rem; margin-bottom:1.2rem; border-radius:2px; animation:shake 0.35s ease; }
+#avis-carret-buit.visible { display:flex; }
+#avis-carret-buit span { font-size:0.82rem; color:var(--primary); font-weight:500; }
 @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
 .field-error input, .field-error textarea { border-bottom-color:var(--primary) !important; animation:shake 0.35s ease; }
 .field-error label { color:var(--primary) !important; }
@@ -228,7 +228,7 @@ footer { background:var(--warm-white); padding:0 1.5rem 2.5rem; text-align:cente
 
 <!-- MENÚ -->
 <section id="menu">
-  <div class="menu-card reveal">
+  <div class="menu-card">
     <div class="menu-header">
       <h2 class="menu-header-title">Carta <em>Kebab &amp; Curry</em></h2>
       <div class="tabs">
@@ -694,7 +694,7 @@ footer { background:var(--warm-white); padding:0 1.5rem 2.5rem; text-align:cente
 
 <!-- COMANDA -->
 <section id="order">
-  <div class="order-card reveal">
+  <div class="order-card">
     <div class="order-header">
       <h2 class="order-title">Recull o <em>a domicili</em></h2>
     </div>
@@ -733,7 +733,7 @@ footer { background:var(--warm-white); padding:0 1.5rem 2.5rem; text-align:cente
           <div class="order-info-msg" id="info-recollida">
             ℹ️ Un cop enviada la comanda, et farem arribar un missatge confirmant quan estarà llesta per recollir.
           </div>
-          <div id="avís-carret-buit">
+          <div id="avis-carret-buit">
             <span>🛒</span>
             <span>Afegeix algun plat de la carta abans d'enviar la comanda.</span>
           </div>
@@ -765,7 +765,7 @@ footer { background:var(--warm-white); padding:0 1.5rem 2.5rem; text-align:cente
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-card reveal">
+  <div class="footer-card">
     <div class="footer-name">Kebab <span>&amp;</span> Curry</div>
     <div class="footer-tagline">La cuina turca i pakistanesa al cor de Barcelona</div>
     <div class="footer-divider"></div>
@@ -924,7 +924,7 @@ function actualitzarCarret() {
 }
 function enviarComanda() {
   if (!cart.length) {
-    const avis = document.getElementById('avís-carret-buit');
+    const avis = document.getElementById('avis-carret-buit');
     avis.classList.remove('visible'); void avis.offsetWidth; avis.classList.add('visible');
     setTimeout(() => avis.classList.remove('visible'), 4000); return;
   }
